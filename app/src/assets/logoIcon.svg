@@ -1,0 +1,14 @@
+<svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M13.5 15C13.5 20.799 18 25.5 18 25.5C18 25.5 22.5 20.799 22.5 15C22.5 9.201 18 4.5 18 4.5C18 4.5 13.5 9.201 13.5 15Z" stroke="url(#paint0_angular_332_2017)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M9.495 12C6.1725 10.569 3 10.5 3 10.5C3 10.5 3.144 17.0715 7.2855 21.2145C11.427 25.3575 18 25.5 18 25.5C18 25.5 24.5715 25.356 28.7145 21.2145C32.8575 17.073 33 10.5 33 10.5C33 10.5 29.829 10.569 26.505 12M18.03 25.5C17.781 27.4995 18.99 31.5 23.271 31.5C26.2635 31.5 27.7605 28.5 33 31.5C32.4 28.5 31.2 26.58 29.4495 25.5M17.9685 25.5C18.219 27.4995 17.0085 31.5 12.7305 31.5C9.735 31.5 8.2395 28.5 3 31.5C3.6 28.5 4.8 26.58 6.5505 25.5" stroke="url(#paint1_angular_332_2017)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+<defs>
+<radialGradient id="paint0_angular_332_2017" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(18 15) rotate(90) scale(10.5 4.5)">
+<stop stop-color="#547683"/>
+<stop offset="1" stop-color="#93C5FD"/>
+</radialGradient>
+<radialGradient id="paint1_angular_332_2017" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(18 21) rotate(90) scale(10.5 15)">
+<stop stop-color="#547683"/>
+<stop offset="1" stop-color="#93C5FD"/>
+</radialGradient>
+</defs>
+</svg>
