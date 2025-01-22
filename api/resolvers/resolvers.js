@@ -5,10 +5,8 @@ import jwt from 'jsonwebtoken';
 const pubsub = new PubSub();
 
 let users = [];
-let programs = [];
 let exercises = [];
 let categories = [];
-let programCompletions = []; 
 
 export const resolvers = {
     Query: {
@@ -20,14 +18,6 @@ export const resolvers = {
             }
             return user;
         },
-        programs: () => programs,
-        program: (_, { id }) => {
-            const program = programs.find(program => program.id === id);
-            if (!program) {
-                throw new Error(`Program with ID ${id} not found`);
-            }
-            return program;
-        },
         exercises: () => exercises,
         exercise: (_, { id }) => {
             const exercise = exercises.find(exercise => exercise.id === id);
@@ -36,6 +26,13 @@ export const resolvers = {
             }
             return exercise;
         },
+        exercisesByCategoryID: (_, { id } ) => {
+            const filteredExercises = exercises.filter(exercise => exercise.categoryId === id)
+            if (!filteredExercises) {
+                throw new Error(`Exercises with category ID ${id} not found`)
+            }
+            return filteredExercises
+        },
         categories: () => categories,
         category: (_, { id }) => {
             const category = categories.find(category => category.id === id);
@@ -43,18 +40,6 @@ export const resolvers = {
                 throw new Error(`Category with ID ${id} not found`);
             }
             return category;
-        },
-        userPrograms: (_, { userId }) => {
-            const userProgramCompletions = programCompletions.filter(
-                completion => completion.user_id === userId
-            );
-            return userProgramCompletions.map(completion => {
-                const program = programs.find(program => program.id === completion.program_id);
-                return program;
-            });
-        },
-        programCompletions: (_, { userId }) => {
-            return programCompletions.filter(completion => completion.user_id === userId);
         },
     },
     Mutation: {
@@ -73,8 +58,7 @@ export const resolvers = {
                 password: hashedPassword,
                 title: 'Beginner',
                 total_points: 0,
-                total_time_spent: 0,
-                total_programs_completed: 0,
+                categories_completed: []
             };
 
             users.push(newUser);
@@ -96,29 +80,21 @@ export const resolvers = {
 
             return token;
         },
-        completeProgram: (_, { userId, programId }) => {
+        completeCategory: (_, { userId, categoryId }) => {
             const user = users.find(user => user.id === userId);
             if (!user) {
                 throw new Error(`User with ID ${userId} not found`);
             }
 
-            const program = programs.find(program => program.id === programId);
-            if (!program) {
-                throw new Error(`Program with ID ${programId} not found`);
+            const category = categories.find(category => category.id === categoryId);
+            if (!category) {
+                throw new Error(`Category with ID ${categoryId} not found`);
             }
 
-            const newCompletion = {
-                id: programCompletions.length + 1,
-                user_id: userId,
-                program_id: programId,
-                completion_date: new Date().toISOString(),
-            };
+            user.categories_completed.push(categoryId)
+            user.total_points += category.points_rewarded
 
-            programCompletions.push(newCompletion);
-
-            user.total_programs_completed += 1;
-
-            return newCompletion;
+            return user;
         },
     },
     Subscription: {
