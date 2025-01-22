@@ -1,41 +1,44 @@
 import { PubSub } from 'graphql-subscriptions';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import db from '../models/index.js';
+import 'dotenv/config'
+const JWT_SECRET = process.env.SECRET
 
+
+const Categories = db.Categories
+const Users = db.Users
+const Exercises = db.Exercises
 const pubsub = new PubSub();
-
-let users = [];
-let exercises = [];
-let categories = [];
 
 export const resolvers = {
     Query: {
-        users: () => users,
+        users: async () => await Users.findAll(),
         user: (_, { id }) => {
-            const user = users.find(user => user.id === id);
+            const user = Users.findByPk(id);
             if (!user) {
                 throw new Error(`User with ID ${id} not found`);
             }
             return user;
         },
-        exercises: () => exercises,
-        exercise: (_, { id }) => {
-            const exercise = exercises.find(exercise => exercise.id === id);
+        exercises:async  () => await Exercises.findAll(),
+        exercise:async  (_, { id }) => {
+            const exercise = await Exercises.findByPk(id);
             if (!exercise) {
                 throw new Error(`Exercise with ID ${id} not found`);
             }
             return exercise;
         },
-        exercisesByCategoryID: (_, { id } ) => {
-            const filteredExercises = exercises.filter(exercise => exercise.categoryId === id)
+        exercisesByCategoryID:async (_, { id } ) => {
+            const filteredExercises = await Exercises.findAll({where:{category_id: id}})
             if (!filteredExercises) {
                 throw new Error(`Exercises with category ID ${id} not found`)
             }
             return filteredExercises
         },
-        categories: () => categories,
-        category: (_, { id }) => {
-            const category = categories.find(category => category.id === id);
+        categories: async () => await Categories.findAll(),
+        category: async (_, { id }) => {
+            const category = await Categories.findByPk(id);
             if (!category) {
                 throw new Error(`Category with ID ${id} not found`);
             }
@@ -43,30 +46,32 @@ export const resolvers = {
         },
     },
     Mutation: {
-        createUser: async (_, { name, email, password }) => {
-            const existingUser = users.find(user => user.email === email);
+        createUser: async (_, { name, email, password}) => {
+            const existingUser = await Users.findOne({where:{email: email}});
+            console.log(existingUser);
+            
             if (existingUser) {
                 throw new Error('User already exists');
             }
 
             const hashedPassword = await bcrypt.hash(password, 10);
 
-            const newUser = {
-                id: users.length + 1,
+            const newUser = await Users.create({
+                id: Users.length + 1,
                 name,
                 email,
                 password: hashedPassword,
                 title: 'Beginner',
                 total_points: 0,
-                categories_completed: []
-            };
+                categories_completed: JSON.stringify([])
+            });
 
-            users.push(newUser);
+
             pubsub.publish('USER_CREATED', { userCreated: newUser });
             return newUser;
         },
         login: async (_, { email, password }) => {
-            const user = users.find(user => user.email === email);
+            const user = await Users.findOne({where:{email:email}});
             if (!user) {
                 throw new Error('User not found');
             }
@@ -75,24 +80,31 @@ export const resolvers = {
             if (!isPasswordValid) {
                 throw new Error('Invalid password');
             }
-
             const token = jwt.sign({ userId: user.id, email: user.email }, JWT_SECRET, { expiresIn: '1h' });
 
             return token;
         },
-        completeCategory: (_, { userId, categoryId }) => {
-            const user = users.find(user => user.id === userId);
+        completeCategory:async (_, { userId, categoryId }) => {
+            const user = await Users.findByPk(userId);
             if (!user) {
                 throw new Error(`User with ID ${userId} not found`);
             }
-
-            const category = categories.find(category => category.id === categoryId);
+            user.categories_completed = JSON.parse(user.categories_completed)
+            const category = await Categories.findByPk(categoryId);
             if (!category) {
                 throw new Error(`Category with ID ${categoryId} not found`);
             }
-
+            console.log(category);
+            if(user.categories_completed.includes(categoryId)){
+                throw new Error(`Already won the category with ID ${categoryId}`);
+            }
+            
             user.categories_completed.push(categoryId)
-            user.total_points += category.points_rewarded
+            user.total_points += category.points
+            user.categories_completed = JSON.stringify(user.categories_completed)
+
+
+            user.save()
 
             return user;
         },
