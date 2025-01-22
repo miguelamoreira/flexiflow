@@ -48,7 +48,7 @@ export const resolvers = {
     Mutation: {
         createUser: async (_, { name, email, password}) => {
             const existingUser = await Users.findOne({where:{email: email}});
-            console.log(existingUser);
+
             
             if (existingUser) {
                 throw new Error('User already exists');
@@ -94,7 +94,7 @@ export const resolvers = {
             if (!category) {
                 throw new Error(`Category with ID ${categoryId} not found`);
             }
-            console.log(category);
+
             if(user.categories_completed.includes(categoryId)){
                 throw new Error(`Already won the category with ID ${categoryId}`);
             }
