@@ -8,7 +8,7 @@ export const typeDefs = gql`
         password: String!
         title: String!
         total_points: Int!
-        categories_completed: [ID]!
+        categories_completed: String!
     }
 
     type Exercise {
@@ -16,15 +16,15 @@ export const typeDefs = gql`
         name: String!
         description: String
         image: String
-        categoryId: ID!
+        category_id: ID!
     }
 
     type Category {
         id: ID!
         name: String!
         description: String
-        points_required: Int!
-        points_rewarded: Int!
+        min_points: Int!
+        points: Int!
     }
 
     type Query {
