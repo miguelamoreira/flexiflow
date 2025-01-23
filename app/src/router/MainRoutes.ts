@@ -8,7 +8,7 @@ const MainRoutes = {
     children: [
         {
             name: 'Dashboard',
-            path: '/',
+            path: '/dashboard',
             component: () => import('@/views/dashboard/index.vue')
         },
         {
