@@ -13,19 +13,7 @@ const checkbox = ref(true);
             <v-label class="font-weight-semibold mb-1">Password</v-label>
             <v-text-field variant="outlined"  density="compact" type="password"   hide-details color="primary"></v-text-field>
         </v-col>
-        <v-col cols="12" class="pt-0">
-            <div class="d-flex flex-wrap align-center">
-                <v-checkbox v-model="checkbox"  color="primary" hide-details>
-                    <template v-slot:label class="text-body-1">Remeber this Device</template>
-                </v-checkbox>
-                <div class="ml-sm-auto">
-                    <RouterLink to="/"
-                        class="text-primary text-decoration-none text-body-1 opacity-1 font-weight-medium">Forgot
-                        Password ?</RouterLink>
-                </div>
-            </div>
-        </v-col>
-        <v-col cols="12" class="pt-0">
+        <v-col cols="12" class="pt-8">
             <v-btn to="/" rounded="md" color="primary" size="large" block   flat>Sign in</v-btn>
         </v-col>
     </v-row>
