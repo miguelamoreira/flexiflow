@@ -32,7 +32,6 @@ const Users = (sequelize) => {
       },
       categories_completed: {
         type: DataTypes.STRING,
-        defaultValue: 0,
       },
     },
     {

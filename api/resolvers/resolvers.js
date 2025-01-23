@@ -91,7 +91,6 @@ export const resolvers = {
             const hashedPassword = await bcrypt.hash(password, 10);
 
             const newUser = await Users.create({
-                id: Users.length + 1,
                 name,
                 email,
                 password: hashedPassword,

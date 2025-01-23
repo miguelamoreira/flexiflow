@@ -1,4 +1,5 @@
 import { createApp } from 'vue';
+import { createPinia } from 'pinia';
 import App from './App.vue';
 import { router } from './router';
 import vuetify from './plugins/vuetify';
@@ -10,10 +11,12 @@ import Maska from 'maska';
 import { DefaultApolloClient } from '@vue/apollo-composable';
 import apolloClient from './plugins/apollo-client';
 const app = createApp(App);
+const pinia = createPinia();
 app.use(router);
 app.use(PerfectScrollbar);
 app.use(VueTablerIcons);
 app.use(Maska);
 app.use(VueApexCharts);
+app.use(pinia);
 app.provide(DefaultApolloClient, apolloClient);
 app.use(vuetify).mount('#app');

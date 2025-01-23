@@ -5,8 +5,6 @@ import NavGroup from './vertical-sidebar/NavGroup/index.vue';
 import NavItem from './vertical-sidebar/NavItem/index.vue';
 import Logo from './logo/Logo.vue';
 // dropdown imports
-import LoginButton from './vertical-header/LoginButton.vue';
-import RegisterButton from './vertical-header/RegisterButton.vue'
 import ProfileDD from './vertical-header/ProfileDD.vue';
 import { Icon } from '@iconify/vue';
 const sidebarMenu = shallowRef(sidebarItems);
@@ -50,8 +48,6 @@ const sDrawer = ref(true);
                 </v-btn>
             </div>
             <div class="d-flex align-center">
-                <LoginButton/>
-                <RegisterButton/>
                 <ProfileDD />
             </div>
         </div>

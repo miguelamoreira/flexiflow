@@ -1,5 +1,15 @@
 <script setup lang="ts">
 import { UserIcon, MailIcon, ListCheckIcon } from 'vue-tabler-icons';
+import { useRouter } from 'vue-router';
+import { useUsersStore } from '@/stores/usersStore';
+
+const usersStore = useUsersStore();
+const router = useRouter()
+
+const logout = () => {
+    usersStore.logout();
+    router.push('/');
+}
 </script>
 
 <template>
@@ -24,7 +34,7 @@ import { UserIcon, MailIcon, ListCheckIcon } from 'vue-tabler-icons';
                 </v-list-item>
             </v-list>
             <div class="pt-4 pb-4 px-5 text-center">
-                <v-btn to="/auth/login" color="primary" variant="outlined" block>Logout</v-btn>
+                <v-btn @click="logout" color="primary" variant="outlined" block>Logout</v-btn>
             </div>
         </v-sheet>
     </v-menu>

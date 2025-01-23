@@ -63,7 +63,7 @@ export const fetchUsers = async () => {
   return data.users;
 };
 
-export const fetchUser = async (id: string) => {
+export const fetchUser = async (id: number) => {
   const { data } = await apiClient.query({ query: GET_USER, variables: { id } });
   return data.user;
 };
