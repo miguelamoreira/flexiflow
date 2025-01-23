@@ -9,6 +9,7 @@ const JWT_SECRET = process.env.SECRET
 const Categories = db.Categories
 const Users = db.Users
 const Exercises = db.Exercises
+const DailyChallenges = db.DailyChallenges
 const pubsub = new PubSub();
 
 export const resolvers = {
@@ -43,6 +44,39 @@ export const resolvers = {
                 throw new Error(`Category with ID ${id} not found`);
             }
             return category;
+        },
+        dailyChallenge: async () => {
+            const today = new Date().toISOString().split("T")[0];
+      
+            let challenge = await DailyChallenges.findOne({ where: { date: today } });
+      
+            if (!challenge) {
+              const exercises = await Exercises.findAll();
+              if (!exercises || exercises.length === 0) {
+                throw new Error("No exercises available to create a challenge");
+              }
+      
+              const randomExercises = exercises
+                .sort(() => 0.5 - Math.random())
+                .slice(0, 3)
+                .map((exercise) => exercise.id);
+      
+              challenge = await DailyChallenges.create({
+                date: today,
+                exercise_ids: randomExercises,
+                points: 5,
+                users: null,
+              });
+            }
+      
+            const exerciseDetails = await Exercises.findAll({
+              where: { id: challenge.exercise_ids },
+            });
+      
+            return {
+              date: challenge.date,
+              exercises: exerciseDetails,
+            };
         },
     },
     Mutation: {
@@ -108,10 +142,78 @@ export const resolvers = {
 
             return user;
         },
+        createDailyChallenge: async (_, { date, points }) => {
+            const existingChallenge = await DailyChallenges.findOne({
+              where: { date },
+            });
+      
+            if (existingChallenge) {
+              throw new Error(`Daily challenge for date ${date} already exists.`);
+            }
+      
+            const allExercises = await Exercises.findAll();
+      
+            if (!allExercises || allExercises.length === 0) {
+              throw new Error("No exercises available to create a challenge.");
+            }
+      
+            const randomExercises = allExercises
+              .sort(() => 0.5 - Math.random())
+              .slice(0, 5)
+              .map((exercise) => exercise.id);
+      
+            const challenge = await DailyChallenges.create({
+              date,
+              exercise_ids: randomExercises,
+              points,
+              users: null,
+            });
+      
+            return {
+              date: challenge.date,
+              exercises: await Exercises.findAll({
+                where: { id: randomExercises },
+              }),
+              points: challenge.points,
+            };
+        },      
+        completeDailyChallenge: async (_, { userId }) => {
+            const today = new Date().toISOString().split("T")[0];
+      
+            const challenge = await DailyChallenges.findOne({
+              where: { date: today },
+            });
+      
+            if (!challenge) {
+              throw new Error("No daily challenge available for today.");
+            }
+      
+            let users = challenge.users_id ? JSON.parse(challenge.users_id) : [];
+      
+            if (users.includes(userId)) {
+              throw new Error("You have already completed today's challenge.");
+            }
+      
+            users.push(userId);
+            challenge.users = JSON.stringify(users);
+            await challenge.save();
+      
+            const user = await Users.findByPk(userId);
+            user.total_points += challenge.points;
+            await user.save();
+      
+            return {
+              user,
+              dailyChallenge: challenge,
+            };
+        },
     },
     Subscription: {
         userCreated: {
-            subscribe: () => pubsub.asyncIterator('USER_CREATED'),
+            subscribe: () => pubsub.asyncIterableIterator('USER_CREATED'),
+        },
+        dailyChallengeCreated: {
+            subscribe: () => pubsub.asyncIterableIterator('DAILY_CHALLENGE_CREATED'),
         },
     },
 };

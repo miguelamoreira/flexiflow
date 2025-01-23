@@ -35,15 +35,27 @@ export const typeDefs = gql`
         exercisesByCategoryID(id: ID!): [Exercise]!
         categories: [Category!]!
         category(id: ID!): Category
+        dailyChallenge: DailyChallenge!
+    }
+
+    type DailyChallenge {
+        id: ID!
+        date: String!
+        exercises: [Exercise]
+        points: Int!
+        users: [User]
     }
 
     type Mutation {
         createUser(name: String!, email: String!, password: String!, title: String!): User!
         login(email: String!, password: String!): String!
         completeCategory(userId: ID!, categoryId: ID!): User!
+        createDailyChallenge(date: String!, points: Int!): DailyChallenge!
+        completeDailyChallenge(userId: ID!): User!
     }
 
     type Subscription {
         userCreated: User!
+        dailyChallengeCreated: DailyChallenge!
     }
 `;

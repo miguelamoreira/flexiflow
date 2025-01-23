@@ -29,11 +29,13 @@ const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
 import UsersModel from './Users.model.js';
 import ExercisesModel from './Exercises.model.js';
 import CategoriesModel from './Categories.model.js';
+import DailyChallengesModel from './DailyChallenges.model.js';
 
 const db = {};
 db.sequelize = sequelize
 db.Users = UsersModel(sequelize, DataTypes);
 db.Exercises = ExercisesModel(sequelize, DataTypes);
 db.Categories = CategoriesModel(sequelize, DataTypes);
+db.DailyChallenges = DailyChallengesModel(sequelize, DataTypes);
 
 export default db;
