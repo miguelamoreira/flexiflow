@@ -4,7 +4,7 @@ import Logoiconimg from '@/assets/logoIcon.svg';
 </script>
 <template>
     <div class="logo">
-        <RouterLink to="/">
+        <RouterLink to="/dashboard">
             <img :src="Logoiconimg" alt="home" />
         </RouterLink>
     </div>

@@ -1,7 +1,22 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue';
+import { useUsersStore } from '@/stores/usersStore';
+import { onMounted, computed } from 'vue';
 
-const keyFeatures = ["Personalized Yoga Plans", "Daily Stretching Routines", "Track Your Progress"];
+const usersStore = useUsersStore();
+const fetchUserData = async () => {
+    try {
+        await usersStore.fetchLoggedInUser();
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+const userTotalPoints = computed(() => usersStore.user?.total_points || 0);
+
+onMounted(() => {
+    fetchUserData();
+});
 </script>
 
 <template>
@@ -10,20 +25,15 @@ const keyFeatures = ["Personalized Yoga Plans", "Daily Stretching Routines", "Tr
             <div class="d-flex justify-space-between align-center mb-3">
                 <div class="d-flex align-center">
                     <div class="rounded-pill d-inline-flex px-4 py-2 align-center bg-primary">
-                        <Icon icon="solar:meditation-bold-duotone" width="25" height="25" class="text-white" />
+                        <Icon icon="solar:stars-minimalistic-bold" width="25" height="25" class="text-white" />
                     </div>
                     <v-card-title class="text-h6 textSecondary font-weight-medium mb-0 ms-3">
-                        Key Features:
+                        Total points
                     </v-card-title>
                 </div>
             </div>
-            <div>
-                <ul class="text-muted">
-                    <li v-for="feature in keyFeatures" :key="feature" class="mb-1">
-                        <Icon icon="solar:check-circle-bold-duotone" width="20" height="20" class="me-2 text-primary" />
-                        {{ feature }}
-                    </li>
-                </ul>
+            <div class="d-flex flex-column align-center text-h5 font-weight-medium textSecondary mt-8 text-center">
+                <span class="ms-2 text-primary">{{ userTotalPoints }} points</span>
             </div>
         </v-card-item>
     </v-card>
