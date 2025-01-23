@@ -36,11 +36,6 @@ const MainRoutes = {
             path: '/plans/all-plans',
             component: () => import('@/views/plans/allPlans.vue')
         },
-        {
-            name: 'My profile',
-            path: '/profile',
-            component: () => import('@/views/profile/profile.vue')
-        },
     ]
 };
 

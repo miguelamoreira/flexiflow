@@ -26,7 +26,7 @@ export const fetchCategories = async () => {
   return data.categories;
 };
 
-export const fetchCategory = async (id: string) => {
+export const fetchCategory = async (id: number) => {
   const { data } = await apiClient.query({ query: GET_CATEGORY, variables: { id } });
   return data.category;
 };

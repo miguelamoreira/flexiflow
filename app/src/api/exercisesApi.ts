@@ -58,12 +58,12 @@ export const fetchExercises = async () => {
   return data.exercises;
 };
 
-export const fetchExercise = async (id: string) => {
+export const fetchExercise = async (id: number) => {
   const { data } = await apiClient.query({ query: GET_EXERCISE, variables: { id } });
   return data.exercise;
 };
 
-export const fetchExercisesByCategoryID = async (id: string) => {
+export const fetchExercisesByCategoryID = async (id: number) => {
   const { data } = await apiClient.query({
     query: GET_EXERCISES_BY_CATEGORY_ID,
     variables: { id },

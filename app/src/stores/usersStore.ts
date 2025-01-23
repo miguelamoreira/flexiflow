@@ -29,39 +29,12 @@ export const useUsersStore = defineStore('users', {
         error: null
     }),
     actions: {
-        async fetchAllUsers() {
-            this.loading = true
-            this.error = null
-            try {
-                const users = await fetchUsers()
-                this.users = users
-            } catch (error) {
-                this.error = "Failed to fetch users"
-                console.error("Error fetching users: ", error)
-            } finally {
-                this.loading = false
-            } 
-        },
-        async fetchUser(userId: number) {
-            this.loading = true
-            this.error = null
-            try {
-                const user = await fetchUser(userId)
-                this.user = user
-            } catch (err) {
-                this.error = `Failed to fetch user with id ${userId}`
-                console.error("Error fetching user: ", this.error)
-            } finally {
-                this.loading = false
-            }
-        },
         async createUser(name: string, email: string, password: string) {
             this.loading = true
             this.error = null
             try {
                 const newUser = await createUser(name, email, password)
-                this.user = newUser
-                this.isAuthenticated = true
+                this.login(email,password)
             } catch (error) {
                 this.error = "Failed to create new user"
                 console.error("Error creating user: ", error)
