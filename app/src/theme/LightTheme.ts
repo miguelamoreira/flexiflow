@@ -8,7 +8,7 @@ const BLUE_THEME: ThemeTypes = {
         'border-opacity': 1
     },
     colors: {
-        primary: '#00A1FF',
+        primary: '#93C5FD',
         secondary: '#8965E5',
         terciary: '#66BB6A',
         info: '#46caeb',

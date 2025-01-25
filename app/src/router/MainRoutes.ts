@@ -36,6 +36,11 @@ const MainRoutes = {
             path: '/plans/all-plans',
             component: () => import('@/views/plans/allPlans.vue')
         },
+        {
+            name: 'Plan',
+            path: `/plans/:id`,
+            component: () => import('@/views/plans/plan.vue')
+        }
     ]
 };
 

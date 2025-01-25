@@ -7,6 +7,8 @@ export const GET_CATEGORIES = gql`
       id
       name
       points
+      min_points
+      description
     }
   }
 `;
@@ -17,6 +19,8 @@ export const GET_CATEGORY = gql`
       id
       name
       points
+      min_points
+      description
     }
   }
 `;

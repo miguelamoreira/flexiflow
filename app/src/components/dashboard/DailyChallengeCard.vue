@@ -1,8 +1,8 @@
 <script setup lang="ts">
 const dailyChallengeCard = {
   title: 'Your Daily Yoga Challenge Awaits!',
-  coveravatar: 'https://via.placeholder.com/250x150.png?text=Daily+Challenge',
-  duration: '1 Day',
+  image: new URL('../../assets/bg_daily.jpg', import.meta.url).href,
+  duration: '15 min',
   category: 'All Levels',
   link: '/challenge/daily-yoga',
 };
@@ -13,7 +13,7 @@ const dailyChallengeCard = {
         <v-col cols="12">
             <v-card elevation="10" rounded="md" class="card-hover">
                 <div>
-                    <v-img :src="dailyChallengeCard.coveravatar" height="250px" cover class="rounded-t-md align-end text-right">
+                    <v-img :src="dailyChallengeCard.image" height="250px" cover class="rounded-t-md align-end text-right">
                         <v-card-item>
                             <v-chip class="bg-surface text-body-2 font-weight-medium" size="small" rounded="pill" v-text="dailyChallengeCard.duration"></v-chip>
                         </v-card-item>
@@ -26,7 +26,9 @@ const dailyChallengeCard = {
                         <p class="text-body-1 textSecondary mb-4">
                             Start today, take the first step on your path to wellness. Feel stronger, more balanced, and empowered. Your yoga journey begins now!
                         </p>
-                        <v-btn elevation="1" class="mb-2" color="primary">Accept the Challenge</v-btn>
+                        <v-btn elevation="1" class="mb-2" color="primary">
+                            <span class="textPrimary">Accept the Challenge</span>
+                        </v-btn>
                     </v-card-item>
                 </div>
             </v-card>

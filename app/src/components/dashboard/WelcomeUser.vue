@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { Icon } from '@iconify/vue';
-
 import { useUsersStore } from '@/stores/usersStore';
 import { onMounted, computed } from 'vue';
 
@@ -21,36 +19,12 @@ onMounted(() => {
 </script>
 
 <template>
-    <v-card elevation="10" class="bg-lightsecondary p-4">
-        <v-card-item>
-            <div class="d-flex justify-space-between align-center mb-3">
-                <div class="d-flex align-center">
-                    <div class="rounded-pill d-inline-flex px-4 py-2 align-center bg-secondary">
-                        <Icon icon="solar:health-bold-duotone" width="25" height="25" class="text-white" />
-                    </div>
-                    <v-card-title class="text-h6 textSecondary font-weight-medium mb-0 ms-3">
-                        Welcome back, <span class="font-weight-bold">{{ userName }}</span>
-                    </v-card-title>
-                </div>
-            </div>
-            <div class="d-flex align-center text-h6 font-weight-medium textSecondary mt-6">
-                Remember, consistency is key! Keep stretching, keep breathing, and enjoy every step of your yoga journey.
-            </div>
-        </v-card-item>
-    </v-card>
+    <div class="d-flex flex-column align-start">
+        <h1 class="text-h1 font-weight-bold textPrimary" > 
+            Welcome back, <span class="text-primary">{{ userName }}</span>
+        </h1>
+        <p class="text-h6 mt-2 textSecondary">
+            Remember, consistency is key! Keep stretching, keep breathing, and enjoy every step of your yoga journey.
+        </p>
+    </div>
 </template>
-
-<style scoped>
-.bg-lightprimary {
-    background-color: #e8f5e9;
-}
-.bg-primary {
-    background-color: #66bb6a;
-}
-.textSecondary {
-    color: #424242;
-}
-.text-muted {
-    color: #6c757d;
-}
-</style>

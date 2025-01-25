@@ -48,6 +48,7 @@ const sDrawer = ref(true);
                 </v-btn>
             </div>
             <div class="d-flex align-center">
+                <NotificationsDD />
                 <ProfileDD />
             </div>
         </div>

@@ -8,6 +8,7 @@ export const GET_EXERCISES = gql`
       name
       description
       category_id
+      image
     }
   }
 `;
@@ -19,6 +20,7 @@ export const GET_EXERCISE = gql`
       name
       description
       category_id
+      image
     }
   }
 `;
@@ -29,6 +31,7 @@ export const GET_EXERCISES_BY_CATEGORY_ID = gql`
       id
       name
       description
+      image
     }
   }
 `;

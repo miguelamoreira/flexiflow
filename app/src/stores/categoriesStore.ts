@@ -25,7 +25,7 @@ export const useCategoriesStore = defineStore('categories', {
     }),
 
     actions: {
-        async fectchAllCategories() {
+        async fetchAllCategories() {
             this.loading = true;
             this.error = null;
             try {

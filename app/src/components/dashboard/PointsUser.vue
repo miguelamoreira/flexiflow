@@ -25,7 +25,7 @@ onMounted(() => {
             <div class="d-flex justify-space-between align-center mb-3">
                 <div class="d-flex align-center">
                     <div class="rounded-pill d-inline-flex px-4 py-2 align-center bg-primary">
-                        <Icon icon="solar:stars-minimalistic-bold" width="25" height="25" class="text-white" />
+                        <Icon icon="solar:stars-minimalistic-bold" width="25" height="25" class="text-lightprimary" />
                     </div>
                     <v-card-title class="text-h6 textSecondary font-weight-medium mb-0 ms-3">
                         Total points
