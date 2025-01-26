@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { fetchUsers, fetchUser, createUser, login } from "@/api/usersApi";
+import { fetchUsers, fetchUser, createUser, login, completeCategory } from "@/api/usersApi";
 
 export interface User {
     id: string;
@@ -89,7 +89,32 @@ export const useUsersStore = defineStore('users', {
             this.user = null
             this.isAuthenticated = false
             this.token = null
-        }
+        },
+        async completeCategory(userId: string, categoryId: string) {
+            this.loading = true;
+            this.error = null;
+      
+            try {
+              const updatedUser = await completeCategory(userId, categoryId);
+      
+              if (this.user) {
+                const categoriesCompleted = JSON.parse(this.user.categories_completed) as string[];
+      
+                if (!categoriesCompleted.includes(categoryId)) {
+                  categoriesCompleted.push(categoryId);
+                }
+      
+                this.user.categories_completed = JSON.stringify(categoriesCompleted);
+                this.user.total_points = updatedUser.total_points;
+              }
+            } catch (error) {
+              this.error = 'Failed to complete category';
+              console.error('Error completing category: ', error);
+            } finally {
+              this.loading = false;
+            }
+          }
+      
     },
     getters: {
         getUserById: (state) => (id: string) => state.users.find((user) => user.id === id),

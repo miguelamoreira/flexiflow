@@ -36,26 +36,6 @@ export const GET_EXERCISES_BY_CATEGORY_ID = gql`
   }
 `;
 
-export const COMPLETE_CATEGORY = gql`
-  mutation CompleteCategory($userId: ID!, $categoryId: ID!) {
-    completeCategory(userId: $userId, categoryId: $categoryId) {
-      id
-      name
-      total_points
-      categories_completed
-    }
-  }
-`;
-
-export const completeCategory = async (userId: string, categoryId: string) => {
-  const { data } = await apiClient.mutate({
-    mutation: COMPLETE_CATEGORY,
-    variables: { userId, categoryId },
-  });
-  return data.completeCategory;
-};
-
-
 export const fetchExercises = async () => {
   const { data } = await apiClient.query({ query: GET_EXERCISES });
   return data.exercises;

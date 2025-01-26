@@ -58,7 +58,7 @@ export const resolvers = {
       
               const randomExercises = exercises
                 .sort(() => 0.5 - Math.random())
-                .slice(0, 3)
+                .slice(0, 5)
                 .map((exercise) => exercise.id);
       
               challenge = await DailyChallenges.create({
@@ -74,8 +74,11 @@ export const resolvers = {
             });
       
             return {
-              date: challenge.date,
-              exercises: exerciseDetails,
+                id: challenge.id,
+                date: challenge.date,
+                exercises: exerciseDetails,
+                points: challenge.points,
+                users: challenge.users,
             };
         },
     },

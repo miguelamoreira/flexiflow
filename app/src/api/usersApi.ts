@@ -56,6 +56,17 @@ export const USER_CREATED = gql`
   }
 `;
 
+export const COMPLETE_CATEGORY = gql`
+  mutation CompleteCategory($userId: ID!, $categoryId: ID!) {
+    completeCategory(userId: $userId, categoryId: $categoryId) {
+      id
+      name
+      total_points
+      categories_completed
+    }
+  }
+`;
+
 export const fetchUsers = async () => {
   const { data } = await apiClient.query({ query: GET_USERS });
   console.log(data);
@@ -82,4 +93,12 @@ export const login = async (email: string, password: string) => {
     variables: { email, password },
   });
   return data.login;
+};
+
+export const completeCategory = async (userId: string, categoryId: string) => {
+  const { data } = await apiClient.mutate({
+    mutation: COMPLETE_CATEGORY,
+    variables: { userId, categoryId },
+  });
+  return data.completeCategory;
 };

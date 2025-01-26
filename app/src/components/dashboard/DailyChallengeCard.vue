@@ -4,7 +4,7 @@ const dailyChallengeCard = {
   image: new URL('../../assets/bg_daily.jpg', import.meta.url).href,
   duration: '15 min',
   category: 'All Levels',
-  link: '/challenge/daily-yoga',
+  link: '/plans/daily-challenge',
 };
 </script>
 
@@ -26,9 +26,11 @@ const dailyChallengeCard = {
                         <p class="text-body-1 textSecondary mb-4">
                             Start today, take the first step on your path to wellness. Feel stronger, more balanced, and empowered. Your yoga journey begins now!
                         </p>
-                        <v-btn elevation="1" class="mb-2" color="primary">
-                            <span class="textPrimary">Accept the Challenge</span>
-                        </v-btn>
+                        <RouterLink :to="dailyChallengeCard.link">
+                            <v-btn elevation="1" class="mb-2" color="primary">
+                                <span class="textPrimary">Accept the Challenge</span>
+                            </v-btn>
+                        </RouterLink>
                     </v-card-item>
                 </div>
             </v-card>

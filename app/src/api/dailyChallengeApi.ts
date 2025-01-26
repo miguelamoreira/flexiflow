@@ -6,10 +6,11 @@ export const GET_DAILY_CHALLENGE = gql`
         dailyChallenge {
             id
             date
-            exercise {
+            exercises {
                 id
                 name
                 description
+                image
             }
             points
             users {
