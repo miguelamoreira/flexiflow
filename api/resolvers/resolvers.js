@@ -46,41 +46,45 @@ export const resolvers = {
             return category;
         },
         dailyChallenge: async () => {
-            const today = new Date().toISOString().split("T")[0];
-      
-            let challenge = await DailyChallenges.findOne({ where: { date: today } });
-      
-            if (!challenge) {
-              const exercises = await Exercises.findAll();
-              if (!exercises || exercises.length === 0) {
-                throw new Error("No exercises available to create a challenge");
-              }
-      
-              const randomExercises = exercises
-                .sort(() => 0.5 - Math.random())
-                .slice(0, 5)
-                .map((exercise) => exercise.id);
-      
-              challenge = await DailyChallenges.create({
-                date: today,
-                exercise_ids: randomExercises,
-                points: 5,
-                users: null,
-              });
+          const today = new Date().toISOString().split("T")[0];
+        
+          let challenge = await DailyChallenges.findOne({ where: { date: today } });
+        
+          if (!challenge) {
+            const exercises = await Exercises.findAll();
+            if (!exercises || exercises.length === 0) {
+              throw new Error("No exercises available to create a challenge");
             }
-      
-            const exerciseDetails = await Exercises.findAll({
-              where: { id: challenge.exercise_ids },
+        
+            const randomExercises = exercises
+              .sort(() => 0.5 - Math.random())
+              .slice(0, 5)
+              .map((exercise) => exercise.id);
+        
+            challenge = await DailyChallenges.create({
+              date: today,
+              exercise_ids: randomExercises.join(","),  // Store as comma-separated string
+              points: 5,
+              users_id: null,
             });
-      
-            return {
-                id: challenge.id,
-                date: challenge.date,
-                exercises: exerciseDetails,
-                points: challenge.points,
-                users: challenge.users,
-            };
-        },
+          }
+        
+          // Split the exercise_ids string into an array
+          const exerciseIds = challenge.exercise_ids.split(",");
+          const exerciseDetails = await Exercises.findAll({
+            where: {
+              id: exerciseIds,
+            },
+          });
+        
+          return {
+            id: challenge.id,
+            date: challenge.date,
+            exercises: exerciseDetails,  // Return exercise objects
+            points: challenge.points,
+            users: challenge.users,  // users is still a string, you can handle it as needed
+          };
+        },        
     },
     Mutation: {
         createUser: async (_, { name, email, password}) => {
@@ -164,24 +168,27 @@ export const resolvers = {
               .slice(0, 5)
               .map((exercise) => exercise.id);
       
+            const exerciseIdsString = JSON.stringify(randomExercises);
             const challenge = await DailyChallenges.create({
               date,
-              exercise_ids: randomExercises,
+              exercise_ids: exerciseIdsString,
               points,
-              users: null,
+              users_id: "",
             });
-      
+
+            const exerciseDetails = await Exercises.findAll({
+              where: { id: randomExercises },
+            });
+        
             return {
               date: challenge.date,
-              exercises: await Exercises.findAll({
-                where: { id: randomExercises },
-              }),
+              exercises: exerciseDetails,
               points: challenge.points,
+              users: challenge.users_id,
             };
-        },      
+        },        
         completeDailyChallenge: async (_, { userId }) => {
             const today = new Date().toISOString().split("T")[0];
-      
             const challenge = await DailyChallenges.findOne({
               where: { date: today },
             });
@@ -189,26 +196,42 @@ export const resolvers = {
             if (!challenge) {
               throw new Error("No daily challenge available for today.");
             }
-      
+    
             let users = challenge.users_id ? JSON.parse(challenge.users_id) : [];
       
             if (users.includes(userId)) {
               throw new Error("You have already completed today's challenge.");
             }
-      
-            users.push(userId);
-            challenge.users = JSON.stringify(users);
+            users.push(Number(userId))
+            challenge.users_id = JSON.stringify(users);
             await challenge.save();
       
             const user = await Users.findByPk(userId);
+            if (!user) {
+              throw new Error(`User with ID ${userId} not found.`);
+            }
+          
             user.total_points += challenge.points;
             await user.save();
       
+            const usersDetails = await Users.findAll({
+              where: {
+                id: users,
+              }
+            });
+          
+            const exercises = await Exercises.findAll({
+              where: { id: JSON.parse(challenge.exercise_ids) },
+            });
+          
             return {
-              user,
-              dailyChallenge: challenge,
+              id: challenge.id,
+              date: challenge.date,
+              exercises,
+              points: challenge.points,
+              users: usersDetails,
             };
-        },
+        }        
     },
     Subscription: {
         userCreated: {

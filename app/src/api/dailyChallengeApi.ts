@@ -34,7 +34,6 @@ export const CREATE_DAILY_CHALLENGE = gql`
             points
             users {
                 id
-                name
             }
         }
     }
@@ -43,15 +42,14 @@ export const CREATE_DAILY_CHALLENGE = gql`
 export const COMPLETE_DAILY_CHALLENGE = gql`
     mutation CompleteDailyChallenge($userId: ID!) {
         completeDailyChallenge(userId: $userId) {
-            user {
+            id
+            date
+            points
+            exercises {
                 id
-                name
-                total_points
             }
-            dailyChallenge {
+            users {
                 id
-                date
-                points
             }
         }
     }
@@ -89,5 +87,8 @@ export const completeDailyChallenge = async (userId: number) => {
         mutation: COMPLETE_DAILY_CHALLENGE,
         variables: { userId }
     })
+
+    console.log("Complete Daily Challenge Response:", data);
+
     return data.completeDailyChallenge
 }

@@ -63,9 +63,12 @@ const startExerciseSequence = () => {
     nextExercise();
 };
 
+let isChallengeComplete = false;
+
 const startBreak = () => {
     countdown.value = breakDuration;
     if (countdownInterval.value) clearInterval(countdownInterval.value);
+
     countdownInterval.value = setInterval(() => {
         if (countdown.value > 0) {
             countdown.value--;
@@ -75,8 +78,11 @@ const startBreak = () => {
             if (currentExerciseIndex.value < exercises.value.length) {
                 startExerciseSequence();
             } else {
-                isComplete.value = true;
-                completeCategoryOrChallenge()
+                if (!isChallengeComplete) {
+                    isComplete.value = true;
+                    completeCategoryOrChallenge();
+                    isChallengeComplete = true;
+                }
             }
         }
     }, 1000);
@@ -120,7 +126,7 @@ const completeCategoryOrChallenge = async () => {
       const dailyChallenge = dailyChallengeStore.dailyChallenge;
       
       if (dailyChallenge) {
-        await dailyChallengeStore.completeDailyChallenge(userId);
+        await dailyChallengeStore.completeDailyChallenge(Number(userId));
       }
     } else {
       const categoriesCompleted = usersStore.user?.categories_completed
@@ -203,7 +209,7 @@ onMounted(async () => {
                 <v-btn v-else-if="!isComplete" color="primary" disabled>
                     Exercise In Progress
                 </v-btn>
-                <v-btn v-else color="primary">
+                <v-btn v-else color="primary" to="/dashboard">
                     Finish
                 </v-btn>
             </UiParentCard>

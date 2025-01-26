@@ -41,7 +41,7 @@ export const typeDefs = gql`
     type DailyChallenge {
         id: ID!
         date: String!
-        exercises: [Exercise]
+        exercises: [Exercise]!
         points: Int!
         users: [User]
     }
@@ -51,7 +51,7 @@ export const typeDefs = gql`
         login(email: String!, password: String!): String!
         completeCategory(userId: ID!, categoryId: ID!): User!
         createDailyChallenge(date: String!, points: Int!): DailyChallenge!
-        completeDailyChallenge(userId: ID!): User!
+        completeDailyChallenge(userId: ID!): DailyChallenge!
     }
 
     type Subscription {

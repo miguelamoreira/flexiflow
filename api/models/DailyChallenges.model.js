@@ -12,17 +12,14 @@ const DailyChallenges = (sequelize, DataTypes) => {
           allowNull: false,
         },
         exercise_ids: {
-          type: DataTypes.JSON,
-          allowNull: false,
+          type: DataTypes.STRING,
         },
         points: {
           type: DataTypes.INTEGER,
           defaultValue: 0,
         },
         users_id: {
-          type: DataTypes.JSON,
-          allowNull: true,
-          defaultValue: null,
+          type: DataTypes.STRING,
         },
       },
       {
