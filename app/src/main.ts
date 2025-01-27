@@ -9,7 +9,9 @@ import VueApexCharts from 'vue3-apexcharts';
 import VueTablerIcons from 'vue-tabler-icons';
 import Maska from 'maska';
 import { DefaultApolloClient } from '@vue/apollo-composable';
-import apolloClient from './plugins/apollo-client';
+import apiClient from './api/apiClient';
+import Toast, { POSITION } from 'vue-toastification';
+import 'vue-toastification/dist/index.css';
 const app = createApp(App);
 const pinia = createPinia();
 app.use(router);
@@ -18,5 +20,9 @@ app.use(VueTablerIcons);
 app.use(Maska);
 app.use(VueApexCharts);
 app.use(pinia);
-app.provide(DefaultApolloClient, apolloClient);
+app.use(Toast, {
+    position: POSITION.BOTTOM_RIGHT,
+    timeout: 5000,
+});
+app.provide(DefaultApolloClient, apiClient);
 app.use(vuetify).mount('#app');

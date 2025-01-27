@@ -58,12 +58,7 @@ export const COMPLETE_DAILY_CHALLENGE = gql`
 export const DAILY_CHALLENGE_CREATED = gql`
     subscription DailyChallengeCreated {
         dailyChallengeCreated {
-            id
             date
-            exercises {
-                id
-                name
-            }
             points
         }
     }
@@ -92,3 +87,24 @@ export const completeDailyChallenge = async (userId: number) => {
 
     return data.completeDailyChallenge
 }
+
+export const subscribeToDailyChallenge = (callback: Function) => {
+    const observable = apiClient.subscribe({
+        query: DAILY_CHALLENGE_CREATED,
+    });
+    
+    const subscription = observable.subscribe({ 
+        next(response) {
+            const newChallenge = response.data?.dailyChallengeCreated;
+            
+            if (newChallenge) {
+                callback(newChallenge);
+            }
+        },
+        error(err) {
+            console.error('Subscription error: ', err);
+        }
+    });
+
+    return subscription;
+};

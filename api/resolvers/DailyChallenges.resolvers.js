@@ -12,6 +12,7 @@ export const resolversDaily = {
     Query: {
         dailyChallenge: async () => {
           const today = new Date().toISOString().split("T")[0];
+          let newChallenge = false
         
           let challenge = await DailyChallenges.findOne({ where: { date: today } });
         
@@ -32,6 +33,7 @@ export const resolversDaily = {
               points: 5,
               users_id: null,
             });
+            newChallenge = true
           }
         
           // Split the exercise_ids string into an array
@@ -41,6 +43,12 @@ export const resolversDaily = {
               id: exerciseIds,
             },
           });
+
+          if (newChallenge) {
+            pubsub.publish('DAILY_CHALLENGE_CREATED', {
+              dailyChallengeCreated: challenge
+            });
+          }
         
           return {
             id: challenge.id,
@@ -82,6 +90,10 @@ export const resolversDaily = {
 
             const exerciseDetails = await Exercises.findAll({
               where: { id: randomExercises },
+            });
+
+            pubsub.publish('DAILY_CHALLENGE_CREATED', {
+              dailyChallengeCreated: challenge
             });
         
             return {

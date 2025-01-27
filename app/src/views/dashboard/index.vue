@@ -5,6 +5,9 @@ import DailyChallengeCard from '@/components/dashboard/DailyChallengeCard.vue';
 import PointsUser from '@/components/dashboard/PointsUser.vue';
 import TitleUser from '@/components/dashboard/TitleUser.vue';
 import CategoriesUser from '@/components/dashboard/CategoriesUser.vue';
+import { useDailyChallengeStore } from '@/stores/dailyChallengeStore';
+const dailyChallengeStore = useDailyChallengeStore();
+dailyChallengeStore.subscribeToDailyChallenge();
 </script>
 
 <template>

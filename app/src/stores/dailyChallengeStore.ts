@@ -1,5 +1,6 @@
-import { fetchDailyChallenge, createDailyChallenge, completeDailyChallenge } from "@/api/dailyChallengeApi";
+import { fetchDailyChallenge, createDailyChallenge, completeDailyChallenge, subscribeToDailyChallenge } from "@/api/dailyChallengeApi";
 import { defineStore } from 'pinia';
+import { useToast } from "vue-toastification";
 
 export interface Exercise {
     id: string;
@@ -86,6 +87,21 @@ export const useDailyChallengeStore = defineStore('dailyChallenge', {
             } finally {
                 this.loading = false
             }
+        },
+        showChallengeToast(challenge: DailyChallenge) {
+            const toast = useToast();
+            if (challenge) {
+                toast.info(`A new daily challenge is available!`);
+            }
+        },
+        subscribeToDailyChallenge() {
+            const subscription = subscribeToDailyChallenge((newChallenge: DailyChallenge) => {
+                
+                this.dailyChallenge = newChallenge;
+                console.log('CHALLENGE CREATED:', newChallenge);
+
+                this.showChallengeToast(newChallenge);
+            });
         }
     }
 })
