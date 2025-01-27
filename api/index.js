@@ -10,7 +10,7 @@ import { useServer } from 'graphql-ws/use/ws';
 import { PubSub } from 'graphql-subscriptions';
 import { gql } from 'graphql-tag';
 import { typeDefs } from './schemas/schema.js'
-import { resolvers } from './resolvers/resolvers.js'
+import { resolvers } from './resolvers/index.js'
 import cors from 'cors';
 
 const schema = makeExecutableSchema({ typeDefs, resolvers });
