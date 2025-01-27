@@ -35,7 +35,7 @@ export const typeDefs = gql`
         exercisesByCategoryID(id: ID!): [Exercise]!
         categories: [Category!]!
         category(id: ID!): Category
-        dailyChallenge: DailyChallenge!
+        dailyChallenge: DailyChallenge
     }
 
     type DailyChallenge {

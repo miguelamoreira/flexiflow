@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useCategoriesStore } from '@/stores/categoriesStore';
 import { useUsersStore } from '@/stores/usersStore';
 import { useExercisesStore } from '@/stores/exercisesStore';
@@ -24,19 +24,26 @@ onMounted(async () => {
     try {
         await categoriesStore.fetchAllCategories();
         await usersStore.fetchLoggedInUser();
-        
-        const userTotalPoints = usersStore.user?.total_points || 0;
+
+        const completedCategoriesRaw = usersStore.user?.categories_completed || [];
+        const completedCategories = typeof completedCategoriesRaw === "string"
+            ? JSON.parse(completedCategoriesRaw).map(Number)
+            : completedCategoriesRaw.map(Number);
+
+        const maxCompletedCategoryID = Math.max(0, ...completedCategories);
 
         planCards.value = await Promise.all(
-            categoriesStore.categories.map(async (category, index) => {
-                await exercisesStore.fetchExercisesByCategoryID(Number(category.id));
-                const exercises = exercisesStore.exercisesByCategory;
-                const cover = exercises[0].image;
-                const isActive = userTotalPoints >= category.min_points || category.min_points === 0;
+            categoriesStore.categories.map(async (category) => {
+                const exercises = await exercisesStore.fetchExercisesByCategoryID(Number(category.id));
+
+                const isCompleted = completedCategories.includes(Number(category.id));
+                const isNextCategory = Number(category.id) === maxCompletedCategoryID + 1;
+
+                const isActive = isCompleted || isNextCategory;
 
                 return {
                     id: category.id,
-                    cover: cover,
+                    cover: exercises && exercises.length > 0 ? exercises[0].image : '',
                     duration: "15 min",
                     title: category.name,
                     link: `/plans/${category.id}`,

@@ -17,6 +17,7 @@ export const resolversDaily = {
           let challenge = await DailyChallenges.findOne({ where: { date: today } });
         
           if (!challenge) {
+            // return null em vez de criar e apagar a subscrição da query
             const exercises = await Exercises.findAll();
             if (!exercises || exercises.length === 0) {
               throw new Error("No exercises available to create a challenge");
@@ -29,14 +30,13 @@ export const resolversDaily = {
         
             challenge = await DailyChallenges.create({
               date: today,
-              exercise_ids: randomExercises.join(","),  // Store as comma-separated string
+              exercise_ids: randomExercises.join(","),
               points: 5,
               users_id: null,
             });
             newChallenge = true
           }
         
-          // Split the exercise_ids string into an array
           const exerciseIds = challenge.exercise_ids.split(",");
           const exerciseDetails = await Exercises.findAll({
             where: {
@@ -53,9 +53,9 @@ export const resolversDaily = {
           return {
             id: challenge.id,
             date: challenge.date,
-            exercises: exerciseDetails,  // Return exercise objects
+            exercises: exerciseDetails,
             points: challenge.points,
-            users: challenge.users,  // users is still a string, you can handle it as needed
+            users: challenge.users,
           };
         },        
     },

@@ -57,6 +57,7 @@ export const useExercisesStore = defineStore('exercises', {
             try {
                 const exercises = await fetchExercisesByCategoryID(id);
                 this.exercisesByCategory = exercises;
+                return exercises;
             } catch (error) {
                 this.error = `Failed to fetch exercises with ID ${id}`;
                 console.error('Error fetching exercise: ', error);
