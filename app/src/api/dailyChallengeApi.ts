@@ -13,10 +13,7 @@ export const GET_DAILY_CHALLENGE = gql`
                 image
             }
             points
-            users {
-                id
-                name
-            }
+            users
         }
     }
 `
@@ -30,11 +27,10 @@ export const CREATE_DAILY_CHALLENGE = gql`
                 id
                 name
                 description
+                image
             }
             points
-            users {
-                id
-            }
+            users
         }
     }
 `
@@ -48,9 +44,7 @@ export const COMPLETE_DAILY_CHALLENGE = gql`
             exercises {
                 id
             }
-            users {
-                id
-            }
+            users
         }
     }
 `

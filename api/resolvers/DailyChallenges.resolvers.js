@@ -12,7 +12,6 @@ export const resolversDaily = {
     Query: {
         dailyChallenge: async () => {
           const today = new Date().toISOString().split("T")[0];
-          let newChallenge = false
         
           let challenge = await DailyChallenges.findOne({ where: { date: today } });
         
@@ -32,7 +31,7 @@ export const resolversDaily = {
             date: challenge.date,
             exercises: exerciseDetails,
             points: challenge.points,
-            users: challenge.users,
+            users: challenge.users_id,
           };
         },        
     },
@@ -57,7 +56,7 @@ export const resolversDaily = {
               .slice(0, 5)
               .map((exercise) => exercise.id);
       
-            const exerciseIdsString = JSON.stringify(randomExercises);
+            const exerciseIdsString = randomExercises.join(",");
             const challenge = await DailyChallenges.create({
               date,
               exercise_ids: exerciseIdsString,
@@ -74,6 +73,7 @@ export const resolversDaily = {
             });
         
             return {
+              id: challenge.id,
               date: challenge.date,
               exercises: exerciseDetails,
               points: challenge.points,
