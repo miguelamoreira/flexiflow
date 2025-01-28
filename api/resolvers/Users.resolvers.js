@@ -45,7 +45,6 @@ export const resolversUsers = {
             });
 
 
-            pubsub.publish('USER_CREATED', { userCreated: newUser });
             return newUser;
         },
         login: async (_, { email, password }) => {
