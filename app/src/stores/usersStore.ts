@@ -96,16 +96,11 @@ export const useUsersStore = defineStore('users', {
       
             try {
               const updatedUser = await completeCategory(userId, categoryId);
-      
-              if (this.user) {
-                const categoriesCompleted = JSON.parse(this.user.categories_completed) as string[];
-      
-                if (!categoriesCompleted.includes(categoryId)) {
-                  categoriesCompleted.push(categoryId);
-                }
-      
-                this.user.categories_completed = JSON.stringify(categoriesCompleted);
-                this.user.total_points = updatedUser.total_points;
+              if(this.user){
+                const newUser = {...this.user}
+                newUser.categories_completed = updatedUser.categories_completed
+                newUser.total_points = updatedUser.total_points
+                this.user = newUser
               }
             } catch (error) {
               this.error = 'Failed to complete category';
