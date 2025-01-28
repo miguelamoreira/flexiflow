@@ -17,24 +17,7 @@ export const resolversDaily = {
           let challenge = await DailyChallenges.findOne({ where: { date: today } });
         
           if (!challenge) {
-            // return null em vez de criar e apagar a subscrição da query
-            const exercises = await Exercises.findAll();
-            if (!exercises || exercises.length === 0) {
-              throw new Error("No exercises available to create a challenge");
-            }
-        
-            const randomExercises = exercises
-              .sort(() => 0.5 - Math.random())
-              .slice(0, 5)
-              .map((exercise) => exercise.id);
-        
-            challenge = await DailyChallenges.create({
-              date: today,
-              exercise_ids: randomExercises.join(","),
-              points: 5,
-              users_id: null,
-            });
-            newChallenge = true
+            return null 
           }
         
           const exerciseIds = challenge.exercise_ids.split(",");
@@ -43,12 +26,6 @@ export const resolversDaily = {
               id: exerciseIds,
             },
           });
-
-          if (newChallenge) {
-            pubsub.publish('DAILY_CHALLENGE_CREATED', {
-              dailyChallengeCreated: challenge
-            });
-          }
         
           return {
             id: challenge.id,
