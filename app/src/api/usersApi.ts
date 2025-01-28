@@ -67,6 +67,19 @@ export const COMPLETE_CATEGORY = gql`
   }
 `;
 
+export const UPDATE_USER_TITLE = gql`
+  mutation UpdateUserTitle($id: ID!, $title: String!) {
+    UpdateUserTitle(id: $id, title: $title) {
+      id
+      name
+      email
+      title
+      total_points
+      categories_completed
+    }
+  }
+`;
+
 export const fetchUsers = async () => {
   const { data } = await apiClient.query({ query: GET_USERS });
   console.log(data);
@@ -76,6 +89,11 @@ export const fetchUsers = async () => {
 
 export const fetchUser = async (id: number) => {
   const { data } = await apiClient.query({ query: GET_USER, variables: { id } });
+  return data.user;
+};
+
+export const updateUserTitle = async (id: string, title: string) => {
+  const { data } = await apiClient.mutate({ mutation: UPDATE_USER_TITLE, variables: { id, title } });
   return data.user;
 };
 

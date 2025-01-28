@@ -8,6 +8,7 @@ const usersStore = useUsersStore();
 const fetchUserData = async () => {
     try {
         await usersStore.fetchLoggedInUser();
+        await usersStore.updateTitle()
     } catch (error) {
         console.error(error);
     }

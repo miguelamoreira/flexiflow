@@ -52,6 +52,7 @@ export const typeDefs = gql`
         completeCategory(userId: ID!, categoryId: ID!): User!
         createDailyChallenge(date: String!, points: Int!): DailyChallenge!
         completeDailyChallenge(userId: ID!): DailyChallenge!
+        UpdateUserTitle(id: ID!, title: String!): User!
     }
 
     type Subscription {

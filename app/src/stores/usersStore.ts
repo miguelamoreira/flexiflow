@@ -1,11 +1,12 @@
 import { defineStore } from 'pinia';
-import { fetchUsers, fetchUser, createUser, login, completeCategory } from '@/api/usersApi';
+import { fetchUsers, fetchUser, createUser, login, completeCategory, updateUserTitle } from '@/api/usersApi';
+
 
 export interface User {
     id: string;
     name: string;
     email: string;
-    title: title;
+    title: string;
     total_points: number;
     categories_completed: string;
 }
@@ -82,20 +83,22 @@ export const useUsersStore = defineStore('users', {
                 this.loading = false;
             }
         },
-        updateTitle() {
+        async updateTitle() {
             const userPoints = this.user?.total_points;
-            const newUser = { ...this.user };
-            if (userPoints && newUser) {
+            const newUser: any = { ...this.user };
+            if (userPoints && newUser && this.user) {
                 switch (true) {
-                    case userPoints >= 4:
-                        newUser.title = title['First Light'];
+                    case userPoints >= 20 :
+                        newUser.title = 'Golden Horizon';
                         break;
-                    case userPoints >= 20:
-                        newUser.title = title['Golden Horizon']
+                    case userPoints >= 4:
+                        newUser.title = 'First Light';
                         break;
                     default:
                         break;
                 }
+                this.user = newUser 
+                await updateUserTitle(String(newUser.id), String(newUser.title))
             }
         },
         parseTokenForUserId(token: string): string | null {
