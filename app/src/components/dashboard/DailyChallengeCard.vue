@@ -21,7 +21,7 @@ const dailyChallengeCard = {
                     <v-card-item class="pt-4">
                         <v-chip class="text-body-2 font-weight-medium bg-grey100" size="small" rounded="pill" v-text="dailyChallengeCard.category"></v-chip>
                         <h5 class="text-h5 text-13 my-6 custom-text-primary">
-                            <RouterLink class="text-decoration-none color-inherits custom-title" :to="dailyChallengeCard.link">{{ dailyChallengeCard.title }}</RouterLink>
+                            {{ dailyChallengeCard.title }}
                         </h5>
                         <p class="text-body-1 textSecondary mb-4">
                             Start today, take the first step on your path to wellness. Feel stronger, more balanced, and empowered. Your yoga journey begins now!
