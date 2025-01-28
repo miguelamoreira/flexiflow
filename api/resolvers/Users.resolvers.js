@@ -39,7 +39,7 @@ export const resolversUsers = {
                 name,
                 email,
                 password: hashedPassword,
-                title: 'Beginner',
+                title: 'Rising Sun',
                 total_points: 0,
                 categories_completed: JSON.stringify([])
             });
