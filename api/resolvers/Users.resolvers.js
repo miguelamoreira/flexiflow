@@ -104,11 +104,12 @@ export const resolversUsers = {
       }
 
       let users = challenge.users_id ? JSON.parse(challenge.users_id) : [];
-
-      if (users.includes(userId)) {
+      const userIdNumber = parseInt(userId, 10);
+      
+      if (users.includes(userIdNumber)) {
         throw new Error("You have already completed today's challenge.");
       }
-      users.push(Number(userId));
+      users.push(userIdNumber)
       challenge.users_id = JSON.stringify(users);
       await challenge.save();
 
