@@ -46,6 +46,8 @@ export const useDailyChallengeStore = defineStore('dailyChallenge', {
             try {
                 const dailyChallenge = await fetchDailyChallenge()
                 this.dailyChallenge = dailyChallenge
+                console.log('already created: ', this.dailyChallenge);
+                
             } catch (error) {
                 this.error = "Failed to fetch daily challenge"
                 console.error("Error fetching daily challenge: ", error)
@@ -63,8 +65,6 @@ export const useDailyChallengeStore = defineStore('dailyChallenge', {
                 if (newChallenge.exercises && newChallenge.exercises.length > 0) {
                     newChallenge.exercise = newChallenge.exercises[0]
                 }
-
-                this.dailyChallenge = newChallenge
             } catch (error) {
                 this.error = "Failed to create daily challenge"
                 console.error("Error creating daily challenge: ", error)

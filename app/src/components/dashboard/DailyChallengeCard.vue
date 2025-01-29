@@ -1,8 +1,4 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import { useDailyChallengeStore } from '@/stores/dailyChallengeStore';
-import { useUsersStore } from '@/stores/usersStore';
-
 const dailyChallengeCard = {
   title: 'Your Daily Yoga Challenge Awaits!',
   image: new URL('../../assets/bg_daily.jpg', import.meta.url).href,
@@ -10,31 +6,6 @@ const dailyChallengeCard = {
   category: 'All Levels',
   link: '/plans/daily-challenge',
 };
-
-const dailyChallengeStore = useDailyChallengeStore();
-const usersStore = useUsersStore();
-const challengeCompleted = ref(false);
-
-onMounted(async () => {
-    await dailyChallengeStore.fetchDailyChallenge();
-
-    if (dailyChallengeStore.dailyChallenge) {
-        const userId = usersStore.user?.id;
-
-        let completedUsers: string[] = [];
-        try {
-            completedUsers = JSON.parse(dailyChallengeStore.dailyChallenge.users);
-        } catch (error) {
-            console.error('Error parsing users: ', error);
-        }
-
-        if (userId && completedUsers.map(String).includes(userId.toString())) {
-        challengeCompleted.value = true;
-        }
-    } else {
-        challengeCompleted.value = false;
-    }
-});
 </script>
 
 <template>
@@ -55,14 +26,11 @@ onMounted(async () => {
                         <p class="text-body-1 textSecondary mb-4">
                             Start today, take the first step on your path to wellness. Feel stronger, more balanced, and empowered. Your yoga journey begins now!
                         </p>
-                        <RouterLink v-if="!challengeCompleted" :to="dailyChallengeCard.link">
+                        <RouterLink :to="dailyChallengeCard.link">
                             <v-btn elevation="1" class="mb-2" color="primary">
                                 <span class="textPrimary">Accept the Challenge</span>
                             </v-btn>
                         </RouterLink>
-                        <v-btn v-else elevation="1" class="mb-2" disabled>
-                            <span class="textPrimary">Challenge Completed</span>
-                        </v-btn>
                     </v-card-item>
                 </div>
             </v-card>
