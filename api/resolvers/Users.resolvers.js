@@ -106,26 +106,19 @@ export const resolversUsers = {
       let users = challenge.users_id ? JSON.parse(challenge.users_id) : [];
       const userIdNumber = parseInt(userId, 10);
       
-      if (users.includes(userIdNumber)) {
-        throw new Error("You have already completed today's challenge.");
+      if (!users.includes(userIdNumber)) {
+        users.push(userIdNumber)
+        challenge.users_id = JSON.stringify(users);
+        await challenge.save();
+
+        const user = await Users.findByPk(userId);
+        if (!user) {
+          throw new Error(`User with ID ${userId} not found.`);
+        }
+
+        user.total_points += challenge.points;
+        await user.save();
       }
-      users.push(userIdNumber)
-      challenge.users_id = JSON.stringify(users);
-      await challenge.save();
-
-      const user = await Users.findByPk(userId);
-      if (!user) {
-        throw new Error(`User with ID ${userId} not found.`);
-      }
-
-      user.total_points += challenge.points;
-      await user.save();
-
-      const usersDetails = await Users.findAll({
-        where: {
-          id: users,
-        },
-      });
 
       const exercises = await Exercises.findAll({
         where: { id: JSON.parse(challenge.exercise_ids) },
@@ -133,10 +126,6 @@ export const resolversUsers = {
 
       return {
         id: challenge.id,
-        date: challenge.date,
-        exercises,
-        points: challenge.points,
-        users: usersDetails,
       };
     },
   },

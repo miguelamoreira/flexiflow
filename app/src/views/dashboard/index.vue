@@ -6,8 +6,15 @@ import PointsUser from '@/components/dashboard/PointsUser.vue';
 import TitleUser from '@/components/dashboard/TitleUser.vue';
 import CategoriesUser from '@/components/dashboard/CategoriesUser.vue';
 import { useDailyChallengeStore } from '@/stores/dailyChallengeStore';
+import { onMounted } from 'vue';
 const dailyChallengeStore = useDailyChallengeStore();
 dailyChallengeStore.subscribeToDailyChallenge();
+
+onMounted( async() => {
+    if (!dailyChallengeStore.dailyChallenge) {
+        await dailyChallengeStore.createDailyChallenge(new Date().toISOString().split("T")[0], 5)
+    }
+})
 </script>
 
 <template>

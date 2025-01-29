@@ -149,11 +149,6 @@ onMounted(async () => {
             await dailyChallengeStore.fetchDailyChallenge();
             let dailyChallenge = dailyChallengeStore.dailyChallenge;
 
-            if (dailyChallenge === null) {
-              await dailyChallengeStore.createDailyChallenge(new Date().toISOString().split("T")[0], 5)
-              dailyChallenge = dailyChallengeStore.dailyChallenge
-            }
-
             if (dailyChallenge) {
                 categoryPoints.value = dailyChallenge.points;
                 categoryName.value = `Daily Challenge: ${new Date(dailyChallenge.date).toLocaleDateString()}`;
