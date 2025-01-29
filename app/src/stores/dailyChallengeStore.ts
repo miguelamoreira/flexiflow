@@ -62,9 +62,9 @@ export const useDailyChallengeStore = defineStore('dailyChallenge', {
             try {
                 const newChallenge = await createDailyChallenge(date, points)
 
-                if (newChallenge.exercises && newChallenge.exercises.length > 0) {
-                    newChallenge.exercise = newChallenge.exercises[0]
-                }
+                this.dailyChallenge = newChallenge
+                console.log('created: ', this.dailyChallenge);
+                
             } catch (error) {
                 this.error = "Failed to create daily challenge"
                 console.error("Error creating daily challenge: ", error)
