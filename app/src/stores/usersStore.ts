@@ -64,6 +64,11 @@ export const useUsersStore = defineStore('users', {
                 this.loading = false;
             }
         },
+        async updatePoints (amount: number){
+            const newUser: any = { ...this.user };
+            newUser.total_points = amount
+            this.user = newUser
+        },
         async fetchLoggedInUser() {
             if (!this.token) {
                 return;

@@ -39,6 +39,9 @@ export const COMPLETE_DAILY_CHALLENGE = gql`
     mutation CompleteDailyChallenge($userId: ID!) {
         completeDailyChallenge(userId: $userId) {
             id
+            points
+            total_points
+            users
         }
     }
 `

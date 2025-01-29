@@ -44,6 +44,7 @@ export const typeDefs = gql`
         exercises: [Exercise]!
         points: Int!
         users: String
+        total_points: Int
     }
 
     type Mutation {

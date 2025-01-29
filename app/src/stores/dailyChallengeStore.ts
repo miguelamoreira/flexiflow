@@ -1,6 +1,7 @@
 import { fetchDailyChallenge, createDailyChallenge, completeDailyChallenge, subscribeToDailyChallenge } from "@/api/dailyChallengeApi";
 import { defineStore } from 'pinia';
 import { useToast } from "vue-toastification";
+import { useUsersStore } from "./usersStore";
 
 export interface Exercise {
     id: string;
@@ -77,10 +78,12 @@ export const useDailyChallengeStore = defineStore('dailyChallenge', {
             this.error = null
 
             try {
-                await completeDailyChallenge(userId)
-                if (this.dailyChallenge) {
-                    this.dailyChallenge.users.push(userId.toString())
-                }
+                const completeChallenge = await completeDailyChallenge(userId);
+                console.log(completeChallenge);
+                
+                const userStore = useUsersStore()
+                userStore.updatePoints(completeChallenge.total_points)
+
             } catch (error) {
                 this.error = "Failed to complete daily challenge"
                 console.error("Error completing daily challenge: ", error)

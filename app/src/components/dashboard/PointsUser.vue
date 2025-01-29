@@ -4,15 +4,23 @@ import { useUsersStore } from '@/stores/usersStore';
 import { onMounted, computed } from 'vue';
 
 const usersStore = useUsersStore();
+var userPoints = usersStore.user.total_points;
 const fetchUserData = async () => {
     try {
-        await usersStore.fetchLoggedInUser();
+        console.log(usersStore.user.total_points);
+        
+        if(!usersStore.user){
+            await usersStore.fetchLoggedInUser();
+        }
+        console.log(usersStore.user.total_points)
+        userPoints = usersStore.user.total_points
+        console.log(userPoints);
+        
     } catch (error) {
         console.error(error);
     }
 };
 
-const userTotalPoints = computed(() => usersStore.user?.total_points || 0);
 
 onMounted(() => {
     fetchUserData();
@@ -33,7 +41,7 @@ onMounted(() => {
                 </div>
             </div>
             <div class="d-flex flex-column align-center text-h5 font-weight-medium textSecondary mt-8 text-center">
-                <span class="ms-2 text-primary">{{ userTotalPoints }} points</span>
+                <span class="ms-2 text-primary">{{ userPoints }} points</span>
             </div>
         </v-card-item>
     </v-card>

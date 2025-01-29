@@ -126,6 +126,7 @@ const completeCategoryOrChallenge = async () => {
       const dailyChallenge = dailyChallengeStore.dailyChallenge;
       
       if (dailyChallenge) {
+        await usersStore.updatePoints()
         await dailyChallengeStore.completeDailyChallenge(Number(userId));
       }
     } else {
