@@ -26,8 +26,8 @@ const isBreak = ref(false);
 const isExerciseActive = ref(false);
 const countdown = ref(0);
 const countdownInterval = ref<ReturnType<typeof setInterval> | null>(null);
-const exerciseDuration = 1;
-const breakDuration = 1;
+const exerciseDuration = 10;
+const breakDuration = 5;
 
 const fetchUserData = async () => {
   try {

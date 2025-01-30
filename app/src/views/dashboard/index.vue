@@ -1,5 +1,4 @@
 <script setup lang="ts">
-/*Call Components*/
 import WelcomeUser from '@/components/dashboard/WelcomeUser.vue';
 import DailyChallengeCard from '@/components/dashboard/DailyChallengeCard.vue';
 import PointsUser from '@/components/dashboard/PointsUser.vue';
